@@ -4,7 +4,7 @@ pipeline {
       stage('checkout') {
            steps {
              
-                git branch: 'main', url: 'git@github.com:zessivila/CI-CD-using-Docker.git'
+                git branch: 'main', url: 'https://github.com/zessivila/CI-CD-Pipeline-.git'
              
           }
         }
