@@ -1,57 +1,20 @@
-pipeline {
-    agent any
- stages {
-      stage('checkout') {
-           steps {
-             
-                git branch: 'main', url: 'https://github.com/zessivila/CI-CD-Pipeline-.git'
-             
-          }
-        }
-	 stage('Maven') {
-           
-	     def mavenHome= tool name: "Maven",type:  "maven"
-             
-                            
-          }
-        }
-        
-
-  stage('Docker Build and Tag') {
-           steps {
-              
-                sh 'docker build -t samplewebapp:latest .' 
-                sh 'docker tag samplewebapp zali45591/samplewebapp:latest'
-                //sh 'docker tag samplewebapp zali45591/samplewebapp:$BUILD_NUMBER'
-               
-          }
-        }
+node{
      
-  stage('Publish image to Docker Hub') {
-          
-            steps {
-        withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-          sh  'docker push zali45591/samplewebapp:latest'
-        //  sh  'docker push zali45591/samplewebapp:$BUILD_NUMBER' 
-        }
-                  
-          }
-        }
-     
-      stage('Run Docker container on Jenkins Agent') {
-             
-            steps 
-			{
-                sh "docker run -d -p 8003:8080 zali45591/samplewebapp"
- 
-            }
-        }
- stage('Run Docker container on remote hosts') {
-             
-            steps {
-                sh "docker -H ssh://jenkins@172.31.95.24  run -d -p 8003:8080 zali45591/samplewebapp"
- 
-            }
-        }
+    stage('SCM Checkout'){
+        git url: 'https://github.com/zessivila/CI-CD-Pipeline-.git',branch: 'main'
     }
-	}
+    
+    stage(" Maven Clean Package"){
+      def mavenHome =  tool name: "Maven", type: "maven"
+      def mavenCMD = "${mavenHome}/bin/mvn"
+      sh "${mavenCMD} clean package"
+      
+    } 
+    
+    
+    stage('Build Docker Image'){
+        sh 'docker build -t samplewebapp:latest .'
+        sh 'docker tag samplewebapp zali45591/samplewebapp:latest'
+        //sh 'docker tag samplewebapp zali45591/samplewebapp:$BUILD_NUMBER'
+    }
+}	
