@@ -17,5 +17,3 @@ spec:
   selector:
     app: javawebapp
     version: "BUILD_NUMBER"
-© 2021 GitHub, Inc.
-Terms
