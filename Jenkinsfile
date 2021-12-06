@@ -17,4 +17,11 @@ node{
         sh 'docker tag samplewebapp zali45591/samplewebapp:latest'
         //sh 'docker tag samplewebapp zali45591/samplewebapp:$BUILD_NUMBER'
     }
-}	
+    
+    stage('Push Docker Image'){
+       withCredentials([string(credentialsId: 'Docker_Hub_Pwd', variable: 'Docker_Hub_Pwd')]) {
+        sh "docker login -u zali45591 -p ${Docker_Hub_Pwd}"
+       }
+       sh 'docker push zali45591/samplewebapp:latest'
+     }
+     
