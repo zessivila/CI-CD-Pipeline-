@@ -9,9 +9,10 @@ pipeline {
           }
         }
 	 stage('Maven') {
-           steps {
+           
+	     def mavenHome= tool name: "Maven",type:  "maven"
              
-                sh 'mvn clean package'             
+                            
           }
         }
         
