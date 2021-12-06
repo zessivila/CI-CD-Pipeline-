@@ -24,4 +24,4 @@ node{
        }
        sh 'docker push zali45591/samplewebapp:latest'
      }
-     
+}     
